@@ -269,15 +269,15 @@ class ApplicationController < ActionController::Base
   def check_if_warning_or_suspension_pending
     return if current_user.nil?
 
-    warning = ModWarning.where(community_user: current_user.community_user, active: true).any?
+    warning = ModMessage.where(community_user: current_user.community_user, active: true).any?
     return unless warning
 
     # Ignore devise and warning routes
-    return if devise_controller? || ['custom_sessions', 'mod_warning', 'errors'].include?(controller_name)
+    return if devise_controller? || ['custom_sessions', 'mod_message', 'errors'].include?(controller_name)
 
     flash.clear
 
-    redirect_to(current_mod_warning_path)
+    redirect_to(current_mod_message_path)
   end
 
   def enforce_2fa

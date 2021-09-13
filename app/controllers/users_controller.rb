@@ -136,7 +136,7 @@ class UsersController < ApplicationController
     @flags = Flag.where(user: @user).count
     @suggested_edits = SuggestedEdit.where(user: @user).count
     @edits = PostHistory.where(user: @user).count
-    @mod_warnings_received = ModWarning.where(community_user: @user.community_user).count
+    @mod_messages_received = ModMessage.where(community_user: @user.community_user).count
 
     @all_edits = @suggested_edits + @edits
 
@@ -145,7 +145,7 @@ class UsersController < ApplicationController
     @interesting_edits = SuggestedEdit.where(user: @user, active: false, accepted: false).count
     @interesting_posts = Post.where(user: @user).where('score < 0.25 OR deleted=1').count
 
-    @interesting = @interesting_comments + @interesting_flags + @mod_warnings_received + \
+    @interesting = @interesting_comments + @interesting_flags + @mod_messages_received + \
                    @interesting_edits + @interesting_posts
 
     @items = (case params[:filter]
@@ -158,7 +158,7 @@ class UsersController < ApplicationController
               when 'edits'
                 SuggestedEdit.where(user: @user).all + PostHistory.where(user: @user).all
               when 'warnings'
-                ModWarning.where(community_user: @user.community_user).all
+                ModMessage.where(community_user: @user.community_user).all
               when 'interesting'
                 Comment.where(user: @user, deleted: true).all + Flag.where(user: @user, status: 'declined').all + \
                   SuggestedEdit.where(user: @user, active: false, accepted: false).all + \
@@ -166,7 +166,7 @@ class UsersController < ApplicationController
               else
                 Post.where(user: @user).all + Comment.where(user: @user).all + Flag.where(user: @user).all + \
                   SuggestedEdit.where(user: @user).all + PostHistory.where(user: @user).all + \
-                  ModWarning.where(community_user: @user.community_user).all
+                  ModMessage.where(community_user: @user.community_user).all
               end).sort_by(&:created_at).reverse
 
     render layout: 'without_sidebar'

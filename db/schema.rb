@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_21_080736) do
+ActiveRecord::Schema.define(version: 2021_09_13_143253) do
 
   create_table "abilities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "community_id"
@@ -259,6 +259,20 @@ ActiveRecord::Schema.define(version: 2021_08_21_080736) do
     t.text "description"
     t.index ["community_id"], name: "index_licenses_on_community_id"
     t.index ["name"], name: "index_licenses_on_name"
+  end
+
+  create_table "mod_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "community_user_id"
+    t.text "body"
+    t.boolean "is_suspension"
+    t.datetime "suspension_end"
+    t.boolean "active"
+    t.bigint "author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "read", default: false
+    t.index ["author_id"], name: "index_mod_messages_on_author_id"
+    t.index ["community_user_id"], name: "index_mod_messages_on_community_user_id"
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -623,20 +637,6 @@ ActiveRecord::Schema.define(version: 2021_08_21_080736) do
     t.index ["community_id"], name: "index_warning_templates_on_community_id"
   end
 
-  create_table "warnings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.bigint "community_user_id"
-    t.text "body"
-    t.boolean "is_suspension"
-    t.datetime "suspension_end"
-    t.boolean "active"
-    t.bigint "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "read", default: false
-    t.index ["author_id"], name: "index_warnings_on_author_id"
-    t.index ["community_user_id"], name: "index_warnings_on_community_user_id"
-  end
-
   add_foreign_key "abilities", "communities"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "audit_logs", "communities"
@@ -654,6 +654,8 @@ ActiveRecord::Schema.define(version: 2021_08_21_080736) do
   add_foreign_key "error_logs", "communities"
   add_foreign_key "error_logs", "users"
   add_foreign_key "flags", "communities"
+  add_foreign_key "mod_messages", "community_users"
+  add_foreign_key "mod_messages", "users", column: "author_id"
   add_foreign_key "notifications", "communities"
   add_foreign_key "pinned_links", "communities"
   add_foreign_key "pinned_links", "posts"
@@ -681,6 +683,4 @@ ActiveRecord::Schema.define(version: 2021_08_21_080736) do
   add_foreign_key "users", "users", column: "deleted_by_id"
   add_foreign_key "votes", "communities"
   add_foreign_key "warning_templates", "communities"
-  add_foreign_key "warnings", "community_users"
-  add_foreign_key "warnings", "users", column: "author_id"
 end

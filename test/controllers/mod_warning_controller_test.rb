@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ModWarningControllerTest < ActionController::TestCase
+class ModMessageControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
   test 'should require authentication to access pages' do
@@ -21,7 +21,7 @@ class ModWarningControllerTest < ActionController::TestCase
 
   test 'suspended user should redirect to current warning page' do
     sign_in users(:standard_user)
-    mod_warnings(:first_warning).update(active: true)
+    mod_messages(:first_warning).update(active: true)
 
     current_controller = @controller
     @controller = CategoriesController.new
@@ -29,33 +29,33 @@ class ModWarningControllerTest < ActionController::TestCase
     @controller = current_controller
 
     assert_redirected_to '/warning'
-    mod_warnings(:first_warning).update(active: false)
+    mod_messages(:first_warning).update(active: false)
   end
 
   test 'warned user should be able to accept warning' do
     sign_in users(:standard_user)
-    @warning = mod_warnings(:first_warning)
-    @warning.update(active: true)
+    @message = mod_messages(:first_warning)
+    @message.update(active: true)
     post :approve, params: { approve_checkbox: true }
-    @warning.reload
-    assert_not @warning.active
+    @message.reload
+    assert_not @message.active
   end
 
   test 'suspended user should not be able to accept pending suspension' do
     sign_in users(:standard_user)
-    @warning = mod_warnings(:third_warning)
-    @warning.update(active: true)
+    @message = mod_messages(:third_warning)
+    @message.update(active: true)
     post :approve, params: { approve_checkbox: true }
-    @warning.reload
-    assert @warning.active
+    @message.reload
+    assert @message.active
   end
 
   test 'suspended user should be able to accept outdated suspension' do
     sign_in users(:standard_user)
-    @warning = mod_warnings(:second_warning)
-    @warning.update(active: true)
+    @message = mod_messages(:second_warning)
+    @message.update(active: true)
     post :approve, params: { approve_checkbox: true }
-    @warning.reload
-    assert_not @warning.active
+    @message.reload
+    assert_not @message.active
   end
 end

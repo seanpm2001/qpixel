@@ -1,7 +1,4 @@
-class ModWarning < ApplicationRecord
-  # Warning class name not accepted by Rails, hence this needed
-  self.table_name = 'warnings'
-
+class ModMessage < ApplicationRecord
   belongs_to :community_user
   belongs_to :author, class_name: 'User'
 

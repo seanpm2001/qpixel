@@ -36,7 +36,7 @@
     </a>
     <a class="button is-muted is-outlined <%= params[:filter] == 'warnings' ? 'is-active' : '' %>" href="?filter=warnings">
         Warnings
-        <% if @mod_warnings_received > 0 %><span class="badge is-status"><%= @mod_warnings_received %></span><% end %>
+        <% if @mod_messages_received > 0 %><span class="badge is-status"><%= @mod_messages_received %></span><% end %>
     </a>
 </div>
 
@@ -107,7 +107,7 @@
                 <td>
                     <%= (i.pending? ? "pending" : (i.approved? ? "helpful" : "declined")) %>
                 </td>
-            <% elsif i.class == ModWarning %>
+            <% elsif i.class == ModMessage %>
                 <td>
                     <span class="h-fw-bold h-c-red-700">Warning</span>
                 </td>

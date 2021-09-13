@@ -44,7 +44,7 @@ module UserMerge
         SuggestedEdit.where(decided_by_id: id).update_all(decided_by_id: target_user.id)
 
         copy_votes(target_user)
-        copy_warnings(target_user, cu_ids)
+        copy_messages(target_user, cu_ids)
 
         AuditLog.user_history event_type: 'user_merge', related: target_user, user: attribute_to,
                               comment: "Merged ##{id} (#{username}) into ##{target_user.id} (#{target_user.username})"
@@ -86,9 +86,9 @@ module UserMerge
       Vote.where(user_id: id).delete_all # delete_all not destroy_all - we'll run a recalc, no need for callbacks
     end
 
-    def copy_warnings(_target_user, cu_ids)
+    def copy_messages(_target_user, cu_ids)
       cu_ids.each do |_cid, ids|
-        ModWarning.where(community_user_id: ids[:source]).update_all(community_user_id: ids[:target])
+        ModMessage.where(community_user_id: ids[:source]).update_all(community_user_id: ids[:target])
       end
     end
   end

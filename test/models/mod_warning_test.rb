@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ModWarningTest < ActiveSupport::TestCase
+class ModMessageTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -2,7 +2,7 @@ class CommunityUser < ApplicationRecord
   belongs_to :community
   belongs_to :user
 
-  has_many :mod_warnings, dependent: :nullify
+  has_many :mod_messages, dependent: :nullify
   has_many :user_abilities, dependent: :destroy
   belongs_to :deleted_by, required: false, class_name: 'User'
 

@@ -236,12 +236,12 @@ Rails.application.routes.draw do
     get    ':category/suggested-edits',    to: 'suggested_edit#category_index', as: :suggested_edits_queue
   end
 
-  get   'warning',                         to: 'mod_warning#current', as: :current_mod_warning
-  post  'warning/approve',                 to: 'mod_warning#approve', as: :current_mod_warning_approve
-  get   'warning/log/:user_id',            to: 'mod_warning#log', as: :mod_warning_log
-  get   'warning/new/:user_id',            to: 'mod_warning#new', as: :new_mod_warning
-  post  'warning/new/:user_id',            to: 'mod_warning#create', as: :create_mod_warning
-  post  'warning/lift/:user_id',            to: 'mod_warning#lift', as: :lift_mod_warning
+  get   'warning',                         to: 'mod_message#current', as: :current_mod_message
+  post  'warning/approve',                 to: 'mod_message#approve', as: :current_mod_message_approve
+  get   'warning/log/:user_id',            to: 'mod_message#log', as: :mod_message_log
+  get   'warning/new/:user_id',            to: 'mod_message#new', as: :new_mod_message
+  post  'warning/new/:user_id',            to: 'mod_message#create', as: :create_mod_message
+  post  'warning/lift/:user_id',            to: 'mod_message#lift', as: :lift_mod_message
 
   get   'uploads/:key',                    to: 'application#upload', as: :uploaded
 
